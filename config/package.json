@@ -1,0 +1,11 @@
+{
+    "name": "kosmonautas-template",
+    "version": "1.0.0",
+    "description": "[Minimal] Containerized Project Template",
+    "author": "Abel Vázquez Montoro <avmontoro@idealista.com>",
+    "license": "ISC",
+    "dependencies": {
+        "phantomjs-prebuilt": "2.1.16",
+        "casperjs": "1.1.4"
+    }
+}
