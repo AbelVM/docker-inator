@@ -219,7 +219,7 @@ So each step is run if its tag is present in the `STEPS` env variable
 
 Each step block calls `step_mytag.sh` script in order to orchestrate the tasks related to the step itself.
 
-In case the step requires to run a SQL script agains a DB, you can use all the global variables within the SQL script file, just using common bash syntax (vg.: `select * from schema.$table where country = $country`), and then running the script like
+In case the step requires to run a SQL script agains a DB, you can use all the global variables within the SQL script file, just using common bash syntax (vg.: `select * from schema.$TABLE where country = $COUNTRY`), and then running the script like
 
 ```bash
 cat sql/step_{tag}.sql | envsubst | db_client db_connection_string
