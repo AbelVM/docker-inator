@@ -231,20 +231,10 @@ If you are using Postgres, you can pass aditional parameters using `-v` option, 
 ```bash
 cat sql/step_{tag}.sql | envsubst | \
 PGPASSWORD=$PG_PWD psql -h $PG_SERVER -p $PG_PORT -d $db -U $PG_USER -q \
--v myparam1=field_1 -v myparam2=filter_2
+-v myparam1=field_1 \
+-v myparam2=filter_2
 
 ```
-
-Being the SQL file something like
-
-```sql
-select 
-    :myparam1 
-from myschema.$COUNTRY
-    where field2 = :myparam2;
-```
-
-`COUNTRY` would be an environment variable
 
 ### Run it
 
@@ -254,19 +244,18 @@ You just need to run
 ./run.sh myserviceimage myservice
 ```
 
-This script will run the following
+This script will run the following command
 
 ```bash
-#!/bin/bash
 docker run -ti --rm \
---name "$2" \
+--name myservice \
 -v $(pwd)/src:/src \
 -v $(pwd)/data:/data \
 --net=host \
 -w /src/ \
 --env-file $(pwd)/config/config.env \
 --entrypoint $(pwd)/src/entrypoint.sh \
-"$1" &> "$2".log
+myserviceimage &> myservice.log
 
 ```
 
@@ -282,12 +271,11 @@ So it will:
 * Override the path of the entrypoint defined in the dockerfile to my `/src/entrypoint.sh` file (from the point of view of the container, once the folders are mapped)
 * Both stdout and stderror will be piped to `myservice`.log
 
-Do you want it to run in the background? Then your `run.sh` should be like
+Do you want it to run in the background? Then you should execute
 
 ```bash
-#!/bin/bash
 docker run -ti -d \
---name "$2" \
+--name myservice \
 -v $(pwd)/src:/src \
 -v $(pwd)/data:/data \
 --net=host \
@@ -295,7 +283,7 @@ docker run -ti -d \
 -w /src/ \
 --env-file $(pwd)/config/config.env \
 --entrypoint $(pwd)/src/entrypoint.sh \
-"$1" &> "$2".log
+myserviceimage &> myservice.log
 
 ```
 
@@ -325,7 +313,7 @@ HOST=*******************************
 USER=*******************************
 PASSWORD=*****************************
 IMAGENAME=***************************
-SERVICENAME=***************************
+SERVICENAME=myservice
 ```
 
 Then just
@@ -334,13 +322,13 @@ Then just
 ./remoterun.sh
 ```
 
-To check the status of the service you can connect to the remote session just by using [tmux](https://github.com/tmux/tmux) or any other similar tool
+To check the status of the service you can connect to the remote session just by using [tmux](https://github.com/tmux/tmux)
 
 ```bash
-tmux attach-session -t "$SERVICENAME"
+tmux attach-session -t myservice
 ```
 
-And, to dettach from remote session:
+And, to detach from remote session:
 
 ```bash
 tmux detach
