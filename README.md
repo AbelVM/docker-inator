@@ -226,13 +226,12 @@ cat sql/step_{tag}.sql | envsubst | db_client db_connection_string
 
 ```
 
-If you are using Postgres, you can pass aditional parameters using `-v` option, and then using the parameter within the script with a colon prefix (vg.:`select * from schema.$table where country = $country and date=:mydate` ) and then running the script the script like
+If you are using Postgres, you can pass aditional parameters using `-v` option, and then using the parameter within the script with a colon prefix (vg.:`select * from schema.$table where country = $COUNTRY and date=:mydate` ) and then running the script the script like
 
 ```bash
 cat sql/step_{tag}.sql | envsubst | \
 PGPASSWORD=$PG_PWD psql -h $PG_SERVER -p $PG_PORT -d $db -U $PG_USER -q \
--v myparam1=field_1 \
--v myparam2=filter_2
+-v mydate='2025/12/02' 
 
 ```
 
