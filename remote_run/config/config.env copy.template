@@ -1,7 +1,0 @@
-STEPS=all
-MY_ITERATOR=es:pt:it
-MY_PARAMETER=999
-PG_SERVER="localhost"
-PG_PORT="5432"
-PG_USER="postgres"
-PG_PWD="postgres"

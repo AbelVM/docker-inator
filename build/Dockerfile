@@ -4,11 +4,11 @@ ENV TZ=Europe/Madrid \
 COPY config/requirements.txt .
 COPY config/packages.txt .
 COPY config/package.json .
-RUN apt update \
-    && xargs -r -a packages.txt apt install -y \
-    && apt clean
-RUN apt install python3-pip python-is-python3 -y \
+RUN apt update
+RUN xargs -r -a packages.txt apt install -y --no-install-recommends
+RUN apt install python3-pip python-is-python3 -y --no-install-recommends \
     && pip install --no-cache-dir -r requirements.txt
-RUN apt install nodejs -y \
+RUN apt install nodejs -y --no-install-recommends \
     && npm install -g
-ENTRYPOINT ["/src/entrypoint.sh"]
+RUN apt clean
+RUN rm -rf /var/lib/apt/lists/*

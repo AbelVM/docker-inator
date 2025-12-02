@@ -1,1 +1,0 @@
-Folder to host your data files, remember to properly set `.gitignore` up

@@ -1,19 +1,15 @@
 #!/bin/bash
 
-
 # remote machine login credentials
 set -a
 . ./config/config_remote.env
-. ./config/config.env
 set +a
 
 # Compile the needed files and folders
 rm -rf dist
 mkdir dist
-cp -r config dist
-cp -r src dist
-cp -r data dist
 cp -r ../build dist
+cp -r ../run dist
 
 # in case you need to remotely setup Docker runtimes
 #      echo '#!/bin/bash
@@ -45,8 +41,8 @@ rm -rf dist
 #      ssh $USER@$HOST "echo $PASSWORD | sudo -S ~/dist/install_docker.sh"
 
 # Build remote container
-ssh $USER@$HOST "~/dist/build/build.sh $SERVICENAME"
+ssh $USER@$HOST "~/dist/build/build.sh $IMAGENAME"
 
 # Run the container in a dettached session
-ssh $USER@$HOST "tmux new-session -d -s '$SERVICENAME' ~/dist/run/run.sh $SERVICENAME"
-# use 'tmux attach-session -t SeaSession' to connect later if needed
+ssh $USER@$HOST "tmux new-session -d -s '$SERVICENAME' ~/dist/run/run.sh $IMAGENAME $SERVICENAME"
+# use "tmux attach-session -t '$SERVICENAME'" to connect later if needed
